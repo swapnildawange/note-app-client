@@ -1,0 +1,27 @@
+.addnote {
+  padding: 1rem;
+  height: fit-content;
+  background-color: white;
+  border-radius: 1rem;
+  position: absolute;
+  margin: 0 auto;
+  /* top: -3.5rem; */
+  left: 0;
+  right: 0;
+  width: 30vw;
+}
+.addnote__input {
+  display: flex;
+  flex-direction: column;
+}
+
+.addnote__input > input {
+  border: none;
+  outline: none;
+  margin: 0.5rem;
+  border-bottom: 2px solid lightgrey;
+  font-size: 1rem;
+}
+.addnote__input > button {
+  display: none;
+}

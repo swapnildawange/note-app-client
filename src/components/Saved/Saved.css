@@ -1,0 +1,11 @@
+.saved {
+    background-color: rgb(245, 245, 235);
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1rem;
+    position: relative;
+    padding-top: 2.5rem;
+  }
+  
