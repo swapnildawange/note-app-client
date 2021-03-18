@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import "./Feed.css";
-import AddNote from "../AddNote";
+import "./Home.css";
 import Note from "../Note";
+import AddNew from "../AddNew/AddNew";
 function Feed() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState(null);
@@ -86,11 +86,7 @@ function Feed() {
   return (
     <div className="feed">
       <div className="feed_input">
-        <AddNote
-          onAddNote={addNote}
-          titleToEdit={title}
-          contentToEdit={content}
-        />
+        <AddNew onAddNote={addNote} titleToEdit={title} contentToEdit={content} />
       </div>
       {notes.map((note) => (
         <Note

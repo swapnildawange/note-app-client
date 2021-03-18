@@ -18,7 +18,7 @@ function Note({ id, title, content, onDelete, onSaved, onCompleted, onEdit }) {
     onCompleted(id);
   };
   const handleEdit = (e) => {
-    onEdit(id);
+    onEdit(id, title, content);
   };
   return (
     <div className="note">

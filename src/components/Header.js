@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Header.css";
 import { House, FolderSimplePlus, Lightbulb, Note } from "phosphor-react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-import Feed from "./Feed/Feed";
+import Home from "./Home/Home";
 import { Archive, ArchiveTwoTone, SaveRounded } from "@material-ui/icons";
 import Notes from "./Notes/Notes";
 import Saved from "./Saved/Saved";
@@ -24,7 +24,7 @@ function Header() {
                   <span className="menu__icon">
                     <House />
                   </span>
-                  <p className="menu__text">Menu</p>
+                  <p className="menu__text">Home</p>
                 </div>
               </Link>
             </li>
@@ -62,7 +62,7 @@ function Header() {
         </div>
       </div>
       <Switch>
-        <Route exact path="/" component={Feed}></Route>
+        <Route exact path="/" component={Home}></Route>
         <Route exact path="/notes" component={Notes}></Route>
         <Route exact path="/idea" component={Idea}></Route>
         <Route exact path="/saved" component={Saved}></Route>

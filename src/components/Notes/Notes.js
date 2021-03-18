@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./Notes.css";
-import AddNote from "../AddNote";
+
 import Note from "../Note";
+import AddNew from "../AddNew/AddNew";
 function Notes() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
+  const [openAdd, setOpenAdd] = useState(true);
 
   useEffect(() => {
     fetchNotes();
@@ -18,11 +20,7 @@ function Notes() {
       .then((response) => setNotes(response.data))
       .catch((error) => console.log(error));
   }
-  const addNote = async (newNote) => {
-    const note = {
-      title: newNote.title,
-      content: newNote.content,
-    };
+  const addNote = async (note) => {
     await axios
       .post("http://localhost:3000/save", note)
       .then((response) => {
@@ -37,8 +35,8 @@ function Notes() {
     await axios
       .delete("http://localhost:3000/delete/" + id)
       .then((response) => {
-        fetchNotes();
         deletedNote = response.data.data;
+        fetchNotes();
       })
       .catch((error) => {
         console.log("error->", error);
@@ -72,18 +70,34 @@ function Notes() {
       .then((response) => fetchNotes())
       .catch((err) => console.log(err));
   };
-  const editNote = async (id) => {
+  const editNote = async (id, title, content) => {
+    const note = {
+      id,
+      title,
+      content,
+    };
     await axios
-      .put("http://localhost:3000/edit/" + id)
+      .put("http://localhost:3000/edit/" + id, note)
       .then((response) => {
-        setTitle(response.data.data.title);
-        setContent(response.data.data.content);
-        deleteNote(id);
+        console.log(response);
+        // setTitle(response.data.data.title);
+        // setContent(response.data.data.content);
+        // setOpenAdd(true);
+        // deleteNote(id);
+        // fetchNotes();
       })
       .catch((err) => console.log(err));
   };
   return (
     <div className="notes">
+      {openAdd && (
+        <AddNew
+          onAddNote={(note) => addNote(note)}
+          onClose={() => setOpenAdd(false)}
+          titleToEdit={title}
+          contentToEdit={content}
+        />
+      )}
       {notes.map((note) => (
         <Note
           key={note._id}
