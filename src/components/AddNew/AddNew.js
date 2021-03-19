@@ -63,7 +63,7 @@ function AddNew({ onAddNote, onClose, titleToEdit, contentToEdit }) {
               className="addBtn"
               onClick={(e) => handleAddnote(e)}
             >
-              Add
+              Save
             </Button>
             <Button type="reset" className="resetBtn" onClick={(e) => reset(e)}>
               Reset

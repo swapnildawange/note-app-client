@@ -46,18 +46,18 @@ function Saved() {
       .catch((err) => console.log(err));
   };
 
-  const addToCompleted = async (id) => {
-    const savedNote = await deleteNote(id);
-    const note = {
-      id: savedNote.id,
-      title: savedNote.title,
-      content: savedNote.content,
-    };
-    await axios
-      .post("http://localhost:3000/completed/save", note)
-      .then((response) => fetchNotes())
-      .catch((err) => console.log(err));
-  };
+  // const addToCompleted = async (id) => {
+  //   const savedNote = await deleteNote(id);
+  //   const note = {
+  //     id: savedNote.id,
+  //     title: savedNote.title,
+  //     content: savedNote.content,
+  //   };
+  //   await axios
+  //     .post("http://localhost:3000/completed/save", note)
+  //     .then((response) => fetchNotes())
+  //     .catch((err) => console.log(err));
+  // };
   const editNote = async (id) => {
     await axios
       .put("http://localhost:3000/edit/" + id)
@@ -79,7 +79,6 @@ function Saved() {
           content={note.content}
           onDelete={deleteNote}
           onSaved={moveToNotes}
-          onCompleted={addToCompleted}
           onEdit={editNote}
         />
       ))}

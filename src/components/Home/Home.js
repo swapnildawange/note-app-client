@@ -60,18 +60,19 @@ function Feed() {
       .catch((err) => console.log(err));
   };
 
-  const addToCompleted = async (id) => {
-    const savedNote = await deleteNote(id);
-    const note = {
-      id: savedNote.id,
-      title: savedNote.title,
-      content: savedNote.content,
-    };
-    await axios
-      .post("http://localhost:3000/completed/save", note)
-      .then((response) => fetchNotes())
-      .catch((err) => console.log(err));
-  };
+  // const addToCompleted = async (id) => {
+  //   const savedNote = await deleteNote(id);
+  //   const note = {
+  //     id: savedNote.id,
+  //     title: savedNote.title,
+  //     content: savedNote.content,
+  //   };
+  //   await axios
+  //     .post("http://localhost:3000/completed/save", note)
+  //     .then((response) => fetchNotes())
+  //     .catch((err) => console.log(err));
+  // };
+
   const editNote = async (id) => {
     await axios
       .put("http://localhost:3000/edit/" + id)
@@ -86,7 +87,11 @@ function Feed() {
   return (
     <div className="feed">
       <div className="feed_input">
-        <AddNew onAddNote={addNote} titleToEdit={title} contentToEdit={content} />
+        <AddNew
+          onAddNote={addNote}
+          titleToEdit={title}
+          contentToEdit={content}
+        />
       </div>
       {notes.map((note) => (
         <Note
@@ -96,7 +101,6 @@ function Feed() {
           content={note.content}
           onDelete={deleteNote}
           onSaved={addToSaved}
-          onCompleted={addToCompleted}
           onEdit={editNote}
         />
       ))}

@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Header.css";
 import { House, FolderSimplePlus, Lightbulb, Note } from "phosphor-react";
-import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import { BrowserRouter, NavLink, Route, Switch } from "react-router-dom";
 import Home from "./Home/Home";
 import { Archive, ArchiveTwoTone, SaveRounded } from "@material-ui/icons";
 import Notes from "./Notes/Notes";
@@ -19,44 +19,44 @@ function Header() {
         <div className="header__menu">
           <ul>
             <li>
-              <Link to="/">
+              <NavLink to="/home" activeClassName="my-active">
                 <div className="header__menuItem">
                   <span className="menu__icon">
                     <House />
                   </span>
                   <p className="menu__text">Home</p>
                 </div>
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/notes">
+              <NavLink to="/notes" activeClassName="my-active">
                 <div className="header__menuItem">
                   <span className="menu__icon">
                     <Note />
                   </span>
                   <p className="menu__text">Notes</p>
                 </div>
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/idea">
+              <NavLink to="/idea" activeClassName="my-active">
                 <div className="header__menuItem">
                   <span className="menu__icon">
                     <Lightbulb />
                   </span>
                   <p className="menu__text">Idea</p>
                 </div>
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/saved">
+              <NavLink to="/saved" activeClassName="my-active">
                 <div className="header__menuItem">
                   <span className="menu__icon">
                     <Archive />
                   </span>
                   <p className="menu__text">Saved</p>
                 </div>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </div>

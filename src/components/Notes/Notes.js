@@ -4,11 +4,15 @@ import "./Notes.css";
 
 import Note from "../Note";
 import AddNew from "../AddNew/AddNew";
+import { Add, PlusOneTwoTone } from "@material-ui/icons";
+import { IconButton } from "@material-ui/core";
 function Notes() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
-  const [openAdd, setOpenAdd] = useState(true);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [idToEdit, setIdToEdit] = useState("");
 
   useEffect(() => {
     fetchNotes();
@@ -58,42 +62,63 @@ function Notes() {
       .catch((err) => console.log(err));
   };
 
-  const addToCompleted = async (id) => {
-    const savedNote = await deleteNote(id);
-    const note = {
-      id: savedNote.id,
-      title: savedNote.title,
-      content: savedNote.content,
-    };
-    await axios
-      .post("http://localhost:3000/completed/save", note)
-      .then((response) => fetchNotes())
-      .catch((err) => console.log(err));
+  // const addToCompleted = async (id) => {
+  //   const savedNote = await deleteNote(id);
+  //   const note = {
+  //     id: savedNote.id,
+  //     title: savedNote.title,
+  //     content: savedNote.content,
+  //   };
+  //   await axios
+  //     .post("http://localhost:3000/completed/save", note)
+  //     .then((response) => fetchNotes())
+  //     .catch((err) => console.log(err));
+  // };
+  const editNote = (id, title, content) => {
+    setTitle(title);
+    setContent(content);
+    setIdToEdit(id);
+    setOpenEdit(true);
+    setOpenAdd(false);
   };
-  const editNote = async (id, title, content) => {
+  const saveEditted = async ({ title, content }) => {
+    console.log();
     const note = {
-      id,
+      id: idToEdit,
       title,
       content,
     };
     await axios
-      .put("http://localhost:3000/edit/" + id, note)
+      .put("http://localhost:3000/edit/" + idToEdit, note)
       .then((response) => {
         console.log(response);
-        // setTitle(response.data.data.title);
-        // setContent(response.data.data.content);
-        // setOpenAdd(true);
-        // deleteNote(id);
-        // fetchNotes();
+        fetchNotes();
       })
       .catch((err) => console.log(err));
   };
+  const closeWindow = () => {
+    setOpenAdd(false);
+    setOpenEdit(false);
+  };
   return (
     <div className="notes">
+      <div className="addBtn">
+        <IconButton onClick={() => setOpenAdd(true)}>
+          <Add />
+        </IconButton>
+      </div>
       {openAdd && (
         <AddNew
           onAddNote={(note) => addNote(note)}
-          onClose={() => setOpenAdd(false)}
+          onClose={closeWindow}
+          titleToEdit={title}
+          contentToEdit={content}
+        />
+      )}
+      {openEdit && (
+        <AddNew
+          onAddNote={(note) => saveEditted(note)}
+          onClose={closeWindow}
           titleToEdit={title}
           contentToEdit={content}
         />
@@ -106,7 +131,7 @@ function Notes() {
           content={note.content}
           onDelete={deleteNote}
           onSaved={addToSaved}
-          onCompleted={addToCompleted}
+          // onCompleted={addToCompleted}
           onEdit={editNote}
         />
       ))}

@@ -34,9 +34,6 @@ function Note({ id, title, content, onDelete, onSaved, onCompleted, onEdit }) {
           <IconButton>
             <NoteAdd />
           </IconButton>
-          <IconButton onClick={handleCompleted}>
-            <CheckCircleOutlineIcon />
-          </IconButton>
           <IconButton onClick={handleEdit}>
             <EditIcon />
           </IconButton>

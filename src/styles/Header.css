@@ -54,6 +54,23 @@
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
 }
+.my-active .header__menuItem:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 31, 29, 0.1);
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+.my-active .header__menuItem:before {
+  content: "";
+  position: absolute;
+  width: 1%;
+  height: 30%;
+  left: 0;
+  background-color: #e7e74c;
+}
 .header__menuItem:hover:before {
   content: "";
   position: absolute;
