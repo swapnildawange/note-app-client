@@ -1,14 +1,17 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import AddNew from "../AddNew/AddNew";
 import Note from "../Note";
 
 function Saved() {
   const [notes, setNotes] = useState([]);
-  const [title, setTitle] = useState(null);
-  const [content, setContent] = useState(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
+  const [idToEdit, setIdToEdit] = useState("");
+
   useEffect(() => {
     fetchNotes();
-    console.log();
   }, []);
 
   const fetchNotes = async () => {
@@ -18,32 +21,38 @@ function Saved() {
       .catch((error) => console.log(error));
   };
   const deleteNote = async (id) => {
-    let deletedNote = null;
     await axios
-      .delete("http://localhost:3000/delete/" + id)
+      .delete("http://localhost:3000/saved/delete/" + id)
+      .then((response) => {})
+      .catch((error) => {
+        console.log("error->", error);
+      });
+
+    fetchNotes();
+  };
+
+  const moveToNotes = async (id) => {
+    let note = {};
+    await axios
+      .delete("http://localhost:3000/saved/delete/" + id)
       .then((response) => {
-        fetchNotes();
-        deletedNote = response.data.data;
+        note = {
+          title: response.data.data.title,
+          content: response.data.data.content,
+        };
+
+        // fetchNotes();
       })
       .catch((error) => {
         console.log("error->", error);
       });
-    // console.log(deletedNote);
-    return deletedNote;
-  };
-
-  const moveToNotes = async (id) => {
-    const savedNote = await deleteNote(id);
-    const note = {
-      id: savedNote.id,
-      title: savedNote.title,
-      content: savedNote.content,
-    };
+    // console.log(note);
 
     await axios
-      .post("http://localhost:3000/saved/save", note)
+      .post("http://localhost:3000/notes/save", note)
       .then((response) => fetchNotes())
       .catch((err) => console.log(err));
+    fetchNotes();
   };
 
   // const addToCompleted = async (id) => {
@@ -58,19 +67,40 @@ function Saved() {
   //     .then((response) => fetchNotes())
   //     .catch((err) => console.log(err));
   // };
-  const editNote = async (id) => {
+  const editNote = (id, title, content) => {
+    setTitle(title);
+    setContent(content);
+    setIdToEdit(id);
+    setOpenEdit(true);
+  };
+  const saveEditted = async ({ title, content }) => {
+    console.log();
+    const note = {
+      id: idToEdit,
+      title,
+      content,
+    };
     await axios
-      .put("http://localhost:3000/edit/" + id)
+      .put("http://localhost:3000/saved/edit/" + idToEdit, note)
       .then((response) => {
-        setTitle(response.data.data.title);
-        setContent(response.data.data.content);
-        deleteNote(id);
+        console.log(response);
       })
       .catch((err) => console.log(err));
+    fetchNotes();
   };
-
+  const closeWindow = () => {
+    setOpenEdit(false);
+  };
   return (
     <div className="saved">
+      {openEdit && (
+        <AddNew
+          onAddNote={(note) => saveEditted(note)}
+          onClose={closeWindow}
+          titleToEdit={title}
+          contentToEdit={content}
+        />
+      )}
       {notes.map((note) => (
         <Note
           key={note._id}

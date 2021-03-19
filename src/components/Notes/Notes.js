@@ -26,40 +26,43 @@ function Notes() {
   }
   const addNote = async (note) => {
     await axios
-      .post("http://localhost:3000/save", note)
-      .then((response) => {
-        fetchNotes();
-      })
+      .post("http://localhost:3000/notes/save", note)
+      .then((response) => {})
       .catch(() => {
         console.log("Internal server error");
       });
+    fetchNotes();
   };
   const deleteNote = async (id) => {
-    let deletedNote = null;
     await axios
-      .delete("http://localhost:3000/delete/" + id)
-      .then((response) => {
-        deletedNote = response.data.data;
-        fetchNotes();
-      })
+      .delete("http://localhost:3000/notes/delete/" + id)
+      .then((response) => {})
       .catch((error) => {
         console.log("error->", error);
       });
     // console.log(deletedNote);
-    return deletedNote;
+    fetchNotes();
   };
 
   const addToSaved = async (id) => {
-    const savedNote = await deleteNote(id);
-    const note = {
-      id: savedNote.id,
-      title: savedNote.title,
-      content: savedNote.content,
-    };
+    let note = {};
+    await axios
+      .delete("http://localhost:3000/notes/delete/" + id)
+      .then((response) => {
+        note = {
+          title: response.data.data.title,
+          content: response.data.data.content,
+        };
+      })
+      .catch((error) => {
+        console.log("error->", error);
+      });
+    console.log(note);
     await axios
       .post("http://localhost:3000/saved/save", note)
       .then((response) => fetchNotes())
       .catch((err) => console.log(err));
+    fetchNotes();
   };
 
   // const addToCompleted = async (id) => {
@@ -89,12 +92,12 @@ function Notes() {
       content,
     };
     await axios
-      .put("http://localhost:3000/edit/" + idToEdit, note)
+      .put("http://localhost:3000/notes/edit/" + idToEdit, note)
       .then((response) => {
         console.log(response);
-        fetchNotes();
       })
       .catch((err) => console.log(err));
+    fetchNotes();
   };
   const closeWindow = () => {
     setOpenAdd(false);
