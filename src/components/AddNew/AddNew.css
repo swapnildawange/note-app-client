@@ -1,78 +1,46 @@
-.addnote {
-  padding: 1rem;
-  height: fit-content;
-  background-color: white;
-  border-radius: 1rem;
-  position: absolute;
-  margin: 1rem 1rem;
-  /* top: -3.5rem; */
-  bottom: 0;
-  right: 0;
-  width: 30vw;
-  box-shadow: 0 0 5px gray;
-}
-.addnote__input {
-  display: flex;
-  flex-direction: column;
-}
-
-.addnote__input .title__input {
-  /* border: none; */
-  /* outline: none; */
-  margin: 0.5rem;
-  /* border-bottom: 2px solid lightgrey; */
-  font-size: 1rem;
-}
-.addnote__input .content__input {
-  /* outline: none; */
-  margin: 0.5rem;
-  /* border-bottom: 2px solid lightgrey; */
-  font-size: 1rem;
-}
-.addNote__wrapper {
-  position: relative;
-  overflow: hidden;
-}
-.addNote__header {
-  display: flex;
+.AddNew {
   justify-content: center;
-  /* align-items: center; */
-  margin-bottom: 1rem;
-}
-.addNote__header > h1 {
-  color: gray;
+  align-items: center;
+  width: 100%;
+  z-index: 99;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
 }
 
-.closeBtn {
+form.create-note {
+  position: relative;
+  width: 480px;
+  margin: 0 auto;
+  margin: 0px auto 20px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+
+form.create-note input,
+form.create-note textarea {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+}
+
+form.create-note button {
   position: absolute;
-  right: 0;
-  /* border: 1px solid gold; */
-}
-.addNote__header .MuiSvgIcon-root {
-  background: gray;
-  color: white;
-  border-radius: 0.2rem;
-}
-.addnote__btnContainer {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  /* border: 1px solid red; */
-  margin: 1rem 0;
-}
-.addnote__btnContainer > Button {
-  padding: 0.4rem 1rem;
-}
-.addnote__btnContainer .addBtn {
-  border: 1px solid #e9896a;
-  color: #e9896a;
-}
-.addnote__btnContainer .resetBtn {
-  color: white;
-  border: 1px solid #343f56;
-  background-color: #343f56;
-}
-.addnote__btnContainer .resetBtn:hover {
-  /* color: #343f56; */
-  background-color: #343f56;
+  right: 18px;
+  bottom: -18px;
+  background: #f5ba13;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
 }

@@ -18,4 +18,10 @@ p {
 }
 .ideaElement > .ideaElement__right {
   grid-area: ideaElement__right;
+  text-align: right;
+  font-family: "Poppins", sans-serif;
+}
+.my-active .ideaElement {
+  text-decoration: none;
+  background-color: whitesmoke;
 }

@@ -1,16 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AddNew from "../AddNew/AddNew";
+import "./Trash.css";
 import Note from "../Note";
-import "./Saved.css";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-function Saved() {
+import AddNew from "../AddNew/AddNew";
+function Trash() {
   const [notes, setNotes] = useState([]);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(null);
+  const [content, setContent] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
   const [idToEdit, setIdToEdit] = useState("");
-
   const breakpointColumnsObj = {
     default: 4,
     1100: 3,
@@ -22,46 +21,48 @@ function Saved() {
     fetchNotes();
   }, []);
 
-  const fetchNotes = async () => {
-    await axios
-      .get("http://localhost:3000/saved")
-      .then((response) => {
-        let arr = response.data;
-        setNotes(arr.reverse());
-      })
+  function fetchNotes() {
+    axios
+      .get("http://localhost:3000/trash")
+      .then((response) => setNotes(response.data))
       .catch((error) => console.log(error));
-  };
+  }
+  // const addNote = async (newNote) => {
+  //   const note = {
+  //     title: newNote.title,
+  //     content: newNote.content,
+  //   };
+  //   await axios
+  //     .post("http://localhost:3000/save", note)
+  //     .then((response) => {
+  //       fetchNotes();
+  //     })
+  //     .catch(() => {
+  //       console.log("Internal server error");
+  //     });
+  // };
   const deleteNote = async (id) => {
     await axios
-      .delete("http://localhost:3000/saved/delete/" + id)
+      .delete("http://localhost:3000/trash/delete/" + id)
       .then((response) => {
-        const note = {
-          title: response.data.data.title,
-          content: response.data.data.content,
-        };
-        console.log(note);
-        axios
-          .post("http://localhost:3000/trash/save", note)
-          .then((response) => console.log(response))
-          .catch((err) => console.log(err));
+        console.log(response);
       })
       .catch((error) => {
         console.log("error->", error);
       });
-
     fetchNotes();
+    // console.log(deletedNote);
   };
 
   const moveToNotes = async (id) => {
     let note = {};
     await axios
-      .delete("http://localhost:3000/saved/delete/" + id)
+      .delete("http://localhost:3000/trash/delete/" + id)
       .then((response) => {
         note = {
           title: response.data.data.title,
           content: response.data.data.content,
         };
-
         // fetchNotes();
       })
       .catch((error) => {
@@ -76,18 +77,7 @@ function Saved() {
     fetchNotes();
   };
 
-  // const addToCompleted = async (id) => {
-  //   const savedNote = await deleteNote(id);
-  //   const note = {
-  //     id: savedNote.id,
-  //     title: savedNote.title,
-  //     content: savedNote.content,
-  //   };
-  //   await axios
-  //     .post("http://localhost:3000/completed/save", note)
-  //     .then((response) => fetchNotes())
-  //     .catch((err) => console.log(err));
-  // };
+
   const editNote = (id, title, content) => {
     setTitle(title);
     setContent(content);
@@ -102,7 +92,7 @@ function Saved() {
       content,
     };
     await axios
-      .put("http://localhost:3000/saved/edit/" + idToEdit, note)
+      .put("http://localhost:3000/trash/edit/" + idToEdit, note)
       .then((response) => {
         console.log(response);
       })
@@ -113,8 +103,9 @@ function Saved() {
     setOpenEdit(false);
   };
 
+  // console.log(notes);
   return (
-    <div className="saved">
+    <div className="feed">
       {openEdit && (
         <AddNew
           onAddNote={(note) => {
@@ -139,7 +130,7 @@ function Saved() {
               onDelete={deleteNote}
               onSaved={moveToNotes}
               onEdit={editNote}
-              isSaved={true}
+              isSaved={false}
               time={note.createdAt}
             />
           ))}
@@ -149,4 +140,4 @@ function Saved() {
   );
 }
 
-export default Saved;
+export default Trash;

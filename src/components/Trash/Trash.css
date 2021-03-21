@@ -4,7 +4,10 @@
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 1rem;
+  padding: 0 1rem;
   position: relative;
-  padding-top: 2.5rem;
+  /* padding-top: 2.5rem; */
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-top: 1rem;
 }

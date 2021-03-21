@@ -1,8 +1,15 @@
 import React from "react";
 import "../styles/Header.css";
-import { House, FolderSimplePlus, Lightbulb, Note } from "phosphor-react";
+import {
+  House,
+  FolderSimplePlus,
+  Lightbulb,
+  Note,
+  Trash as Bin,
+} from "phosphor-react";
 import { BrowserRouter, NavLink, Route, Switch } from "react-router-dom";
-import Home from "./Home/Home";
+import Trash from "./Trash/Trash";
+
 import { Archive, ArchiveTwoTone, SaveRounded } from "@material-ui/icons";
 import Notes from "./Notes/Notes";
 import Saved from "./Saved/Saved";
@@ -19,16 +26,6 @@ function Header() {
         <div className="header__menu">
           <ul>
             <li>
-              <NavLink to="/home" activeClassName="my-active">
-                <div className="header__menuItem">
-                  <span className="menu__icon">
-                    <House />
-                  </span>
-                  <p className="menu__text">Home</p>
-                </div>
-              </NavLink>
-            </li>
-            <li>
               <NavLink to="/notes" activeClassName="my-active">
                 <div className="header__menuItem">
                   <span className="menu__icon">
@@ -44,7 +41,7 @@ function Header() {
                   <span className="menu__icon">
                     <Lightbulb />
                   </span>
-                  <p className="menu__text">Idea</p>
+                  <p className="menu__text">Ideas</p>
                 </div>
               </NavLink>
             </li>
@@ -58,14 +55,24 @@ function Header() {
                 </div>
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/trash" activeClassName="my-active">
+                <div className="header__menuItem">
+                  <span className="menu__icon">
+                    <Bin size={26} />
+                  </span>
+                  <p className="menu__text">Trash</p>
+                </div>
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
       <Switch>
-        <Route exact path="/" component={Home}></Route>
         <Route exact path="/notes" component={Notes}></Route>
         <Route exact path="/idea" component={Idea}></Route>
         <Route exact path="/saved" component={Saved}></Route>
+        <Route exact path="/Trash" component={Trash}></Route>
       </Switch>
     </BrowserRouter>
   );

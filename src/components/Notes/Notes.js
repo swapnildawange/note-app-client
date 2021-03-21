@@ -6,11 +6,12 @@ import Note from "../Note";
 import AddNew from "../AddNew/AddNew";
 import { Add, PlusOneTwoTone } from "@material-ui/icons";
 import { IconButton } from "@material-ui/core";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 function Notes() {
   const [notes, setNotes] = useState([]);
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
-  const [openAdd, setOpenAdd] = useState(false);
+  const [openAdd, setOpenAdd] = useState(true);
   const [openEdit, setOpenEdit] = useState(false);
   const [idToEdit, setIdToEdit] = useState("");
 
@@ -21,7 +22,10 @@ function Notes() {
   function fetchNotes() {
     axios
       .get("http://localhost:3000/notes")
-      .then((response) => setNotes(response.data))
+      .then((response) => {
+        let arr = response.data;
+        setNotes(arr.reverse());
+      })
       .catch((error) => console.log(error));
   }
   const addNote = async (note) => {
@@ -36,7 +40,17 @@ function Notes() {
   const deleteNote = async (id) => {
     await axios
       .delete("http://localhost:3000/notes/delete/" + id)
-      .then((response) => {})
+      .then((response) => {
+        const note = {
+          title: response.data.data.title,
+          content: response.data.data.content,
+        };
+        console.log(note);
+        axios
+          .post("http://localhost:3000/trash/save", note)
+          .then((response) => console.log(response))
+          .catch((err) => console.log(err));
+      })
       .catch((error) => {
         console.log("error->", error);
       });
@@ -65,18 +79,6 @@ function Notes() {
     fetchNotes();
   };
 
-  // const addToCompleted = async (id) => {
-  //   const savedNote = await deleteNote(id);
-  //   const note = {
-  //     id: savedNote.id,
-  //     title: savedNote.title,
-  //     content: savedNote.content,
-  //   };
-  //   await axios
-  //     .post("http://localhost:3000/completed/save", note)
-  //     .then((response) => fetchNotes())
-  //     .catch((err) => console.log(err));
-  // };
   const editNote = (id, title, content) => {
     setTitle(title);
     setContent(content);
@@ -103,41 +105,53 @@ function Notes() {
     setOpenAdd(false);
     setOpenEdit(false);
   };
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1,
+  };
   return (
     <div className="notes">
-      <div className="addBtn">
-        <IconButton onClick={() => setOpenAdd(true)}>
-          <Add />
-        </IconButton>
-      </div>
       {openAdd && (
         <AddNew
-          onAddNote={(note) => addNote(note)}
-          onClose={closeWindow}
+          onAddNote={(note) => {
+            addNote(note);
+          }}
           titleToEdit={title}
           contentToEdit={content}
         />
       )}
       {openEdit && (
         <AddNew
-          onAddNote={(note) => saveEditted(note)}
-          onClose={closeWindow}
+          onAddNote={(note) => {
+            saveEditted(note);
+            closeWindow();
+          }}
           titleToEdit={title}
           contentToEdit={content}
         />
       )}
-      {notes.map((note) => (
-        <Note
-          key={note._id}
-          id={note._id}
-          title={note.title}
-          content={note.content}
-          onDelete={deleteNote}
-          onSaved={addToSaved}
-          // onCompleted={addToCompleted}
-          onEdit={editNote}
-        />
-      ))}
+      <ResponsiveMasonry
+        style={{ width: "100%" }}
+        columnsCountBreakPoints={breakpointColumnsObj}
+      >
+        <Masonry>
+          {notes.map((note) => (
+            <Note
+              key={note._id}
+              id={note._id}
+              title={note.title}
+              content={note.content}
+              onDelete={deleteNote}
+              onSaved={addToSaved}
+              // onCompleted={addToCompleted}
+              onEdit={editNote}
+              time={note.createdAt}
+            />
+          ))}
+        </Masonry>
+      </ResponsiveMasonry>
     </div>
   );
 }

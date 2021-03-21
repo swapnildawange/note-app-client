@@ -6,9 +6,10 @@
   /* min-height: 100vh; */
   background: #457166;
   min-width: 15vw;
-
   padding-top: 2rem;
-  /* align-items: center; */
+
+  /* left: 100%;
+  top: 0; */
 }
 .header__title {
   display: flex;
@@ -80,13 +81,13 @@
   background-color: #e7e74c;
 }
 .menu__icon {
-  font-size: 2rem;
+  font-size: 1.8rem;
   padding-left: 1.5rem;
   padding-right: 1rem;
   margin: 0;
 }
 .menu__text {
-  margin-top: -0.3rem;
+  /* margin-top: -0.3rem; */
   padding-right: 5rem;
   /* border: 1px solid red; */
 }

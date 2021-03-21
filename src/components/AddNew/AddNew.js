@@ -1,76 +1,52 @@
-import { Button, IconButton, Input } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+import { Fab, Zoom } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import React, { useEffect, useState } from "react";
 import "./AddNew.css";
 function AddNew({ onAddNote, onClose, titleToEdit, contentToEdit }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
   const handleAddnote = async (e) => {
     e.preventDefault();
     if (title && content) {
       onAddNote({ title: title, content: content });
       setTitle("");
       setContent("");
+      setIsExpanded(false);
     }
   };
-  const reset = (e) => {
-    e.preventDefault();
-    setTitle("");
-    setContent("");
-  };
-  const close = (e) => {
-    e.preventDefault();
-    onClose(true);
-  };
+
   useEffect(() => {
     setTitle(titleToEdit);
     setContent(contentToEdit);
   }, [titleToEdit, contentToEdit]);
 
   return (
-    <div className="addnote">
-      <div className="addNote__wrapper">
-        <div className="addNote__header">
-          <h1>Add New Idea</h1>
-          <div className="closeBtn">
-            <IconButton onClick={(e) => close(e)}>
-              <Close />
-            </IconButton>
-          </div>
-        </div>
-
-        <form className="addnote__input">
-          <Input
-            className="title__input"
+    <div className="AddNew">
+      <form className="create-note">
+        {isExpanded && (
+          <input
+            name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            type="text"
             placeholder="Title"
-            multiline
           />
+        )}
 
-          <Input
-            value={content}
-            className="content__input"
-            onChange={(e) => setContent(e.target.value)}
-            type="text"
-            placeholder="Note"
-            multiline
-          />
-          <div className="addnote__btnContainer">
-            <Button
-              type="submit"
-              className="addBtn"
-              onClick={(e) => handleAddnote(e)}
-            >
-              Save
-            </Button>
-            <Button type="reset" className="resetBtn" onClick={(e) => reset(e)}>
-              Reset
-            </Button>
-          </div>
-        </form>
-      </div>
+        <textarea
+          name="content"
+          value={content}
+          onClick={() => setIsExpanded(true)}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Take a note..."
+          rows={isExpanded ? 3 : 1}
+        />
+        <Zoom in={isExpanded}>
+          <Fab onClick={(e) => handleAddnote(e)}>
+            <AddIcon />
+          </Fab>
+        </Zoom>
+      </form>
     </div>
   );
 }
